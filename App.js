@@ -8,6 +8,7 @@ import SignUp from './src/screens/sign-up';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { initializeApp } from "firebase/app";
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -22,6 +23,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
 const AppTheme = {
   ...DefaultTheme,

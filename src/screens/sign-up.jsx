@@ -4,13 +4,37 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import { RadioButton } from 'react-native-paper'; 
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../App'
 
 
 
+
+//const auth = getAuth();
 
 export default function SignUp() {
   const navigation = useNavigation()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); 
+  const [name, setName] = useState(''); 
+  const [age, setAge] = useState(''); 
   const [selectedValue, setSelectedValue] = useState('option1'); 
+  
+  const signup =()=>{
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        console.log('hello',user)
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+    
+  }
   
   return (
     <SafeAreaView style={{paddingHorizontal: 15, paddingVertical: 10}}>
@@ -21,10 +45,10 @@ export default function SignUp() {
       <Text style ={{fontSize: 18}}>Never forget your notes</Text>
     </View>
     <View>
-       <TextInput style={styles.input} placeholder='Email' /> 
-       <TextInput style={styles.input} placeholder='password' secureTextEntry={true}/> 
-       <TextInput style={styles.input} placeholder='Full name' /> 
-       <TextInput style={styles.input} placeholder='Age' /> 
+       <TextInput style={styles.input} placeholder='Email' onChangeText={(text)=>setEmail(text)} /> 
+       <TextInput style={styles.input} placeholder='password' secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/> 
+       <TextInput style={styles.input} placeholder='Full name' onChangeText={(text)=>setName(text)} /> 
+       <TextInput style={styles.input} placeholder='Age' onChangeText={(text)=>setAge(text)} /> 
     </View>
     <View style={styles.radioButton}> 
       <RadioButton.Android 
@@ -50,10 +74,13 @@ export default function SignUp() {
           Female 
       </Text> 
       </View> 
-    <Button title={'Login'} custtomStyles={{marginTop: 10}}  />
+    <Button onPress={signup} title={'Signup'} custtomStyles={{marginTop: 10}}  />
    <View>
-    <Pressable onPress={()=> navigation.navigate('SignIn')}>
-       <Text style={styles.accountLink}>Already have an account? <Text style={{color:'blue'}}>Sign in</Text></Text>
+    <Pressable>
+       <Text style={styles.accountLink}>Already have an account?
+       <Pressable onPress={()=> navigation.navigate('SignIn')}>
+       <Text style={{color:'blue'}}>Sign in</Text>
+        </Pressable></Text>
         </Pressable>
       </View>
   </ScrollView>
