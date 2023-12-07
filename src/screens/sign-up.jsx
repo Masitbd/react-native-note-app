@@ -1,11 +1,15 @@
-import { View, Text, Image, TextInput, StyleSheet, ScrollView, Pressable } from 'react-native'
+import { View, Text,  TextInput, StyleSheet, ScrollView, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import { RadioButton } from 'react-native-paper'; 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../App'
+import { auth, db } from '../firebase'
+//import { addDoc, collection, getDocs, doc, onSnapshot, query, where } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+
+
 
 
 
@@ -20,19 +24,26 @@ export default function SignUp() {
   const [age, setAge] = useState(''); 
   const [selectedValue, setSelectedValue] = useState('option1'); 
   
-  const signup =()=>{
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        console.log('hello',user)
-        // ...
-      })
-      .catch((error) => {
+  const signup =async()=>{
+    try{
+    const result = await  createUserWithEmailAndPassword(auth, email, password)
+     
+        await addDoc(collection(db, 'users'), {
+          email: email,
+          password: password,
+          name: name,
+          age: age,
+          gender: selectedValue,
+          uid: result.user.uid
+        })
+  console.log('result', result);
+  }
+     
+catch(error){
         const errorCode = error.code;
         const errorMessage = error.message;
-        // ..
-      });
+       console.log("error --->", error)
+      };
     
   }
   

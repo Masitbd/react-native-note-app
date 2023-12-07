@@ -9,6 +9,7 @@ import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore/lite';
 
 
 
@@ -24,6 +25,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app)
 
 const AppTheme = {
   ...DefaultTheme,
@@ -43,8 +45,9 @@ export default function App() {
       user ? (
         <>
       <Stack.Screen name="Home" component={Home}/>
-      <Stack.Screen name="Edit" component={Edit}/>
       <Stack.Screen name="Create" component={Create}/>
+      <Stack.Screen name="Edit" component={Edit}/>
+      
         </>
       ):(
         <>
