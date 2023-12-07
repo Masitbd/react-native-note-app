@@ -1,12 +1,32 @@
 import { View, Text, Image, TextInput, StyleSheet, ScrollView, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from '../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import Input from '../components/Input'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase'
 
 export default function SignIn() {
   const navigation = useNavigation()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
+
+
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp')
+  } 
+
+  const login = () =>{
+    signInWithEmailAndPassword(auth, email, password).then((res) =>{
+
+    console.log('Signed in successfully')
+    }).catch((err)=>{
+      console.log('find', err);
+    })}
+   
   return (
     <SafeAreaView style={{paddingHorizontal: 15, paddingVertical: 10}}>
     <ScrollView>
@@ -22,10 +42,10 @@ export default function SignIn() {
     </View>
     <View>
       {/* <TextInput style={styles.input} placeholder='Email' /> */} 
-      <Input placeholder='Email' />
-       <TextInput style={styles.input} placeholder='password' secureTextEntry={true}/> 
-    </View>
-    <Button title={'Login'} custtomStyles={{marginTop: 10}}  />
+      <TextInput style={styles.input} placeholder='Email' onChangeText={(text)=>setEmail(text)} /> 
+      <TextInput style={styles.input} placeholder='password' autoCapitalize='none' secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/> 
+      </View>
+    <Button onPress={login} title={'Login'} custtomStyles={{marginTop: 10}}  />
   
     <View>
        <Pressable onPress={()=> navigation.navigate('SignUp')}>

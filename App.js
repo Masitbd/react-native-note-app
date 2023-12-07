@@ -8,22 +8,11 @@ import SignUp from './src/screens/sign-up';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import FlashMessage from "react-native-flash-message";
+import { useEffect, useState } from 'react';
+import { auth } from './src/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { ActivityIndicator } from 'react-native-paper';
 
-
-
-/* const firebaseConfig = {
-  apiKey: "AIzaSyBDpTfHmNlrxpuooa2KVyMO9J2H7w1nQ1g",
-  authDomain: "react-native-note-app-4fd92.firebaseapp.com",
-  projectId: "react-native-note-app-4fd92",
-  storageBucket: "react-native-note-app-4fd92.appspot.com",
-  messagingSenderId: "308090357770",
-  appId: "1:308090357770:web:147093c909f06438ddf7f3"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app) */
 
 const AppTheme = {
   ...DefaultTheme,
@@ -35,18 +24,63 @@ const AppTheme = {
 
 const Stack = createNativeStackNavigator();
 export default function App() {
-  const user = false
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+
+  /* useEffect(() => {
+    signOut(auth)
+   }, [])  */
+  
+  //const user = false
+
+  useEffect(() => {
+    const authSubscription = onAuthStateChanged(auth, (user) => {
+     if(user){
+      setUser(user);
+      setLoading(false)
+     }
+     else{
+      setUser(null);
+      setLoading(false)
+     }
+    })
+     return authSubscription
+  },[]);
+
+  
+
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator color='blue' size='large' />
+  </View>
+  
+  /* if (loading) {
+    return (
+      setTimeout(() => {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator color='blue' size='large' />
+          </View>
+        );
+      }, 30000)
+    );
+  } */
+  
   return (
     <NavigationContainer theme={AppTheme}>
     <Stack.Navigator>
       {
       user ? (
         <>
-      <Stack.Screen name="Home" component={Home}/>
+      {/* <Stack.Screen name="Home" component={Home}/> */}
+      <Stack.Screen name="Home" options={{headerShown:false}}>
+      {
+        (props) => <Home {...props} user={user} />
+      }  
+      </Stack.Screen>
       <Stack.Screen name="Create" component={Create}/>
       <Stack.Screen name="Edit" component={Edit}/>
-      
-        </>
+      </>
       ):(
         <>
         <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
@@ -68,4 +102,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+})

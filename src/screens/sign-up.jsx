@@ -13,11 +13,10 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 
-
-
 //const auth = getAuth();
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false)
   const navigation = useNavigation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
@@ -26,6 +25,7 @@ export default function SignUp() {
   const [selectedValue, setSelectedValue] = useState('option1'); 
   
   const signup =async()=>{
+    setLoading(true)
     try{
     const result = await  createUserWithEmailAndPassword(auth, email, password)
      
@@ -38,6 +38,7 @@ export default function SignUp() {
           uid: result.user.uid
         })
   console.log('result', result);
+  setLoading(false) 
   }
      
 catch(error){
@@ -48,6 +49,7 @@ catch(error){
         message: "error!",
         type: "danger",
       });
+      setLoading(false)
       };
     
   }
@@ -62,8 +64,8 @@ catch(error){
     </View>
     <View>
        <TextInput style={styles.input} placeholder='Email' onChangeText={(text)=>setEmail(text)} /> 
-       <TextInput style={styles.input} placeholder='password' secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/> 
-       <TextInput style={styles.input} placeholder='Full name' onChangeText={(text)=>setName(text)} /> 
+       <TextInput style={styles.input} placeholder='password' autoCapitalize='none' secureTextEntry={true} onChangeText={(text)=>setPassword(text)}/> 
+       <TextInput style={styles.input} placeholder='Full name' autoCapitalize='words' onChangeText={(text)=>setName(text)} /> 
        <TextInput style={styles.input} placeholder='Age' onChangeText={(text)=>setAge(text)} /> 
     </View>
     <View style={styles.radioButton}> 
