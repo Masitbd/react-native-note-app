@@ -7,13 +7,11 @@ import SignIn from './src/screens/sign-in';
 import SignUp from './src/screens/sign-up';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
-import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore/lite';
+import FlashMessage from "react-native-flash-message";
 
 
 
-const firebaseConfig = {
+/* const firebaseConfig = {
   apiKey: "AIzaSyBDpTfHmNlrxpuooa2KVyMO9J2H7w1nQ1g",
   authDomain: "react-native-note-app-4fd92.firebaseapp.com",
   projectId: "react-native-note-app-4fd92",
@@ -25,7 +23,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app)
+export const db = getFirestore(app) */
 
 const AppTheme = {
   ...DefaultTheme,
@@ -53,10 +51,12 @@ export default function App() {
         <>
         <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
         <Stack.Screen name="SignUp" component={SignUp}/>
-        </>
+       </>
       )
     }
+   
     </Stack.Navigator>
+    <FlashMessage position="top" />
   </NavigationContainer>
 );
 }

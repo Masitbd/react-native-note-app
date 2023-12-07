@@ -29,7 +29,7 @@ export default function SignIn() {
   
     <View>
        <Pressable onPress={()=> navigation.navigate('SignUp')}>
-       <Text style={styles.accountLink}>Don't hane an account? <Text style={{color:'blue'}}>Sign up</Text></Text>
+       <Text style={styles.accountLink}>Don't have an account? <Text style={{color:'blue'}}>Sign up</Text></Text>
         </Pressable>
       </View>
     

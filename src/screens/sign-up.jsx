@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../firebase'
 //import { addDoc, collection, getDocs, doc, onSnapshot, query, where } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 
@@ -42,7 +43,11 @@ export default function SignUp() {
 catch(error){
         const errorCode = error.code;
         const errorMessage = error.message;
-       console.log("error --->", error)
+      // console.log("error --->", error)
+      showMessage({
+        message: "error!",
+        type: "danger",
+      });
       };
     
   }
