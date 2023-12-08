@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function Edit() {
   return (
-    <View>
+    <View >
       <Text>edit</Text>
     </View>
   )
