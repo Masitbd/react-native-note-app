@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RadioButton } from 'react-native-paper'; 
@@ -18,7 +18,8 @@ export default function Create({navigation, route, user}) {
 
 
 const createNote = async()=>{
-  console.log('my getting user', description)
+ 
+  setLoading(true)
   try{
      await addDoc(collection(db, 'notes'), {
           title: title,
@@ -28,6 +29,11 @@ const createNote = async()=>{
         })
   console.log('result', title);
   setLoading(false) 
+  showMessage({
+    message: "New note created successfully",
+    type: "default",
+  });
+  navigation.goBack()
   }
      
 catch(error){
@@ -90,7 +96,11 @@ catch(error){
           Red
       </Text> 
       </View> 
-      <Button onPress={createNote} title={'Creat Note'} custtomStyles={{marginTop: 10}}  />
+      {
+        loading? <ActivityIndicator /> :
+     
+      <Button onPress={createNote} title={'Create Note'} custtomStyles={{marginTop: 10}}  />
+    }
     </SafeAreaView>
   )
 }
